@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <form action='/upload?name=img1' method='post' encType="multipart/form-data">
+        <input type="file" name="sampleFile" /><br>
+        <input type='submit' value='Upload!' /><br>
+    </form> 
+
+    <form action='/upload?name=img2' method='post' encType="multipart/form-data">
+        <input type="file" name="sampleFile" /><br>
+        <input type='submit' value='Upload!' /><br>
+    </form>
+    <a href="./images.html">View images</a>   
+  </body>
+</html>
