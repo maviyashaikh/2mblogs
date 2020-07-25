@@ -46,3 +46,7 @@ app.post('/upload', (req, res) => {
         res.send({Result: 'Successfully uploaded'})
     })
 })
+
+app.listen(port, () => {
+    console.log(`Server is up on ${port}!`)
+})
