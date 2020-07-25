@@ -20,14 +20,14 @@ app.post('/upload', (req, res) => {
 
     let sampleFile = req.files.sampleFile
     let filename = req.query.name
-    let imagesfolder =  './public/images/'
+    let imagesfolder =  './public/img/'
     let fileextension = req.files.sampleFile.name.split('.')[1]
     
     sampleFile.mv(imagesfolder + filename + '.'+ fileextension, function (err) {
         if (err) { return console.log(err) }
         let newData = {
             name: filename,
-            path: './images/' + filename + '.' + fileextension
+            path: './img/' + filename + '.' + fileextension
         }
 
         MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
