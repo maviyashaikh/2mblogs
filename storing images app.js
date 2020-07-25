@@ -23,6 +23,24 @@ app.post('/upload', (req, res) => {
     let imagesfolder =  './public/img/'
     let fileextension = req.files.sampleFile.name.split('.')[1]
     
+    fs.readdir(imagesfolder, (err, files) => {
+        files.forEach(file => {
+            if(file === filename + '.jpeg'){
+            fs.unlink('./public/img/' + filename + '.jpeg', (err => {
+                if(err) { return console.log(err) }
+                }))
+            } else if(file === filename + '.jpg'){
+                fs.unlink('./public/img/' + filename + '.jpg', (err => {
+                    if(err) { return console.log(err) }
+                }))
+            } else if(file === filename + '.png'){
+                fs.unlink('./public/img/' + filename + '.png', (err => {
+                    if(err) { return console.log(err) }
+                }))
+            }
+        })
+    })
+    
     sampleFile.mv(imagesfolder + filename + '.'+ fileextension, function (err) {
         if (err) { return console.log(err) }
         let newData = {
