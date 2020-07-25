@@ -1,0 +1,14 @@
+MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
+  assert.equal(null, err)
+    
+  const myAwesomeDB = db.db('image-upload')
+
+  myAwesomeDB.collection('image-details').deleteOne({name: filename}, function(err, ress) {  // deleting if already exists
+      if(err) { return console.log(err) }
+  })
+
+
+  myAwesomeDB.collection('image-details').insertOne(newData, function(err, result) {  // inserting 
+      if (err) { return console.log(err) }
+  })
+})
