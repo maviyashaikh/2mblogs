@@ -1,0 +1,17 @@
+app.get('/second' , (req, res) => {
+    var requestToken = req.query.oauth_token, verifier = req.query.oauth_verifier;
+    NT.getAccessToken(requestToken, _requestSecret, verifier, function(err, accessToken, accessSecret) {
+        if (err)
+            res.status(500).send(err);
+        else
+            NT.verifyCredentials(accessToken, accessSecret, function(err, user) {
+                if (err)
+                    res.status(500).send(err);
+                else{
+                    accessT = accessToken
+                    accessS = accessSecret
+                    res.redirect('http://localhost:3000/home.html?name=' + user.screen_name)
+                }
+            })
+    })
+})
