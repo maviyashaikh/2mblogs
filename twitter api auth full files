@@ -54,29 +54,6 @@ app.listen(port, () => {
 
 
 
-// ---------------public/index.html file-------------------- // 
-
-<!DOCTYPE html>
-<html>
-    <body>
-        <button>Login with twitter</button>
-        <script src="./js/login.js"></script>
-    </body>
-</html>
-
-
-
-// ---------------public/home.html file-------------------- // 
-
-<!DOCTYPE html>
-<html>
-    <body>
-        <label></label>
-        <script src="./js/client.js"></script>
-    </body>
-</html>
-
-
 
 // ---------------public/js/login.js file-------------------- // 
 
@@ -99,3 +76,27 @@ document.querySelector('button').addEventListener('click' , (e) => {
 document.addEventListener('DOMContentLoaded', (e) => {
     document.querySelector('label').textContent = 'Hello ' + window.location.search.split('&')[0].substring(6)
 })
+
+
+
+// ---------------public/index.html file-------------------- // 
+
+<!DOCTYPE html>
+<html>
+    <body>
+        <button>Login with twitter</button>
+        <script src="./js/login.js"></script>
+    </body>
+</html>
+
+
+
+// ---------------public/home.html file-------------------- // 
+
+<!DOCTYPE html>
+<html>
+    <body>
+        <label></label>
+        <script src="./js/client.js"></script>
+    </body>
+</html>
