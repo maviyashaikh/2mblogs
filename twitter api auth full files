@@ -1,0 +1,101 @@
+// ---------------src/app.js file-------------------- // 
+
+const express = require('express')
+const path = require('path')
+var nodetwitter = require("node-twitter-api")
+
+var NT = new nodetwitter({
+    consumerKey: process.env.CONSUMER_KEY,
+    consumerSecret: process.env.CONSUMER_SECRET,
+    callback: 'http://localhost:3000/second'
+})
+
+const app = express()
+const port = process.env.port
+
+const publicDirectoryPath = path.join(__dirname, '../public') 
+app.use(express.static(publicDirectoryPath))  
+
+var _requestSecret
+
+app.get('/request-token', (req, res) => {
+    NT.getRequestToken(function(err, requestToken, requestSecret) {
+
+        if (err)
+            res.status(500).send(err);
+        else {
+            _requestSecret = requestSecret
+            res.send({requestToken})
+        }
+    })
+})
+
+app.get('/second' , (req, res) => {
+    var requestToken = req.query.oauth_token, verifier = req.query.oauth_verifier;
+    NT.getAccessToken(requestToken, _requestSecret, verifier, function(err, accessToken, accessSecret) {
+        if (err)
+            res.status(500).send(err);
+        else
+            NT.verifyCredentials(accessToken, accessSecret, function(err, user) {
+                if (err)
+                    res.status(500).send(err);
+                else{
+                    accessT = accessToken
+                    accessS = accessSecret
+                    res.redirect('http://localhost:3000/home.html?name=' + user.screen_name)
+                }
+            })
+    })
+})
+
+app.listen(port, () => {
+    console.log('Server is running on port ' + port)
+})
+
+
+
+// ---------------public/index.html file-------------------- // 
+
+<!DOCTYPE html>
+<html>
+    <body>
+        <button>Login with twitter</button>
+        <script src="./js/login.js"></script>
+    </body>
+</html>
+
+
+
+// ---------------public/home.html file-------------------- // 
+
+<!DOCTYPE html>
+<html>
+    <body>
+        <label></label>
+        <script src="./js/client.js"></script>
+    </body>
+</html>
+
+
+
+// ---------------public/js/login.js file-------------------- // 
+
+document.querySelector('button').addEventListener('click' , (e) => {
+    e.preventDefault()
+    fetch('/request-token').then((response) => {
+        response.json().then((data) => {
+            if (data.requestToken) {
+                window.location.href = 'https://api.twitter.com/oauth/authenticate?oauth_token=' + data.requestToken + '&force_login=true'
+            }
+        })
+    })
+    fetch('/second')
+})
+
+
+
+// ---------------public/js/client.js file-------------------- // 
+
+document.addEventListener('DOMContentLoaded', (e) => {
+    document.querySelector('label').textContent = 'Hello ' + window.location.search.split('&')[0].substring(6)
+})
